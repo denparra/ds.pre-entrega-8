@@ -1,56 +1,71 @@
-"""Persistencia de las ventas transformadas en SQLite."""
+"""Persistencia de las ventas transformadas con SQLAlchemy ORM."""
 
-import sqlite3
 from pathlib import Path
+
+from sqlalchemy import URL, create_engine, delete, func, select
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+
+from src.models import Base, Venta
 
 
 def cargar_ventas(
     ventas: list[tuple[str, str, str, str, int, float, float]],
     ruta_db: Path,
-    ruta_schema: Path,
 ) -> tuple[int, float]:
-    """Crea el esquema y reemplaza la tabla analítica en una transacción."""
-    if not ruta_schema.is_file():
-        raise FileNotFoundError(f"No se encontró el esquema SQL: {ruta_schema}")
+    """Crea la tabla desde el modelo y reemplaza sus filas en una transacción."""
+    if not ventas:
+        raise ValueError("No hay ventas válidas; se conserva la base existente sin cambios.")
 
-    ddl = ruta_schema.read_text(encoding="utf-8")
-    conexion: sqlite3.Connection | None = None
+    # URL.create construye una URL SQLite segura a partir de la ruta del archivo.
+    url_db = URL.create("sqlite", database=str(ruta_db.resolve()))
+    engine = create_engine(url_db)
 
     try:
-        conexion = sqlite3.connect(ruta_db)
+        # SQLAlchemy crea la tabla desde Venta si todavía no existe.
+        Base.metadata.create_all(engine)
 
-        # Crear la tabla si aún no existe. El archivo SQL contiene el DDL.
-        conexion.executescript(ddl)
+        # La Session agrupa operaciones ORM; begin confirma o revierte el lote completo.
+        with Session(engine) as session:
+            with session.begin():
+                session.execute(delete(Venta))
 
-        # La limpieza y la recarga son atómicas: ante un error, SQLite revierte ambas.
-        with conexion:
-            conexion.execute("DELETE FROM ventas_analiticas")
-            conexion.executemany(
-                """
-                INSERT INTO ventas_analiticas (
-                    order_id,
-                    user_id,
-                    id_producto,
-                    fecha,
-                    cantidad,
-                    precio_unitario,
-                    total_venta
-                ) VALUES (?, ?, ?, ?, ?, ?, ?)
-                """,
-                ventas,
-            )
+                session.add_all(
+                    [
+                        Venta(
+                            order_id=order_id,
+                            user_id=user_id,
+                            id_producto=id_producto,
+                            fecha=fecha,
+                            cantidad=cantidad,
+                            precio_unitario=precio_unitario,
+                            total_venta=total_venta,
+                        )
+                        for (
+                            order_id,
+                            user_id,
+                            id_producto,
+                            fecha,
+                            cantidad,
+                            precio_unitario,
+                            total_venta,
+                        ) in ventas
+                    ]
+                )
 
-            cantidad_cargada = conexion.execute(
-                "SELECT COUNT(*) FROM ventas_analiticas"
-            ).fetchone()[0]
-            total_cargado = conexion.execute(
-                "SELECT COALESCE(SUM(total_venta), 0) FROM ventas_analiticas"
-            ).fetchone()[0]
+                # Estas consultas sirven para comprobar la carga antes de cerrar la transacción.
+                cantidad_cargada = session.scalar(
+                    select(func.count()).select_from(Venta)
+                ) or 0
+                total_cargado = session.scalar(
+                    select(func.coalesce(func.sum(Venta.total_venta), 0.0))
+                ) or 0.0
 
-        return cantidad_cargada, float(total_cargado)
+        return int(cantidad_cargada), float(total_cargado)
 
-    except sqlite3.Error as error:
-        raise RuntimeError(f"No se pudo completar la carga en SQLite: {error}") from error
+    except SQLAlchemyError as error:
+        raise RuntimeError(
+            f"SQLAlchemy no pudo completar la carga en SQLite: {error}"
+        ) from error
     finally:
-        if conexion is not None:
-            conexion.close()
+        engine.dispose()

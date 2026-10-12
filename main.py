@@ -11,7 +11,6 @@ from src.transform import transformar_ventas
 CARPETA_PROYECTO = Path(__file__).resolve().parent
 CARPETA_DATOS = CARPETA_PROYECTO / "data"
 RUTA_DB = CARPETA_DATOS / "ventas.db"
-RUTA_SCHEMA = CARPETA_PROYECTO / "sql" / "schema.sql"
 
 
 def main() -> int:
@@ -27,7 +26,7 @@ def main() -> int:
         print(f"      Pedidos listos para cargar: {len(ventas)}")
 
         print("[3/3] Guardando el resultado en SQLite...")
-        cantidad, total = cargar_ventas(ventas, RUTA_DB, RUTA_SCHEMA)
+        cantidad, total = cargar_ventas(ventas, RUTA_DB)
 
     except (OSError, ValueError, RuntimeError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
