@@ -1,0 +1,16 @@
+id_producto,nombre_producto,precio_unitario
+P001,Laptop Lenovo ThinkPad X1,1450.0
+P002,Mouse Logitech MX Master 3,89.99
+P003,Teclado Mecanico Keychron K2,110.5
+P004,Monitor Dell 27 4K UHD,385.0
+P005,Auriculares Sony WH-1000XM5,349.99
+P006,Webcam Logitech C920 HD Pro,75.0
+P007,SSD Samsung 1TB NVMe,125.75
+P008,Memoria RAM 16GB DDR4 Corsair,68.9
+P009,Silla Ergonomica Interstuhl,299.0
+P010,Escritorio Elevable Electrico,450.0
+P011,Tablet iPad Air 10.9,599.0
+P012,Smartphone Samsung Galaxy S23,799.99
+P013,Impresora HP LaserJet Pro,210.0
+P014,Disco Externo Seagate 2TB,95.5
+P015,Router WiFi 6 TP-Link Archer,65.0

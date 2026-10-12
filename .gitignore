@@ -1,0 +1,7 @@
+# Entornos virtuales y archivos temporales de Python.
+.venv/
+__pycache__/
+*.py[cod]
+
+# La base SQLite es un resultado generado por main.py.
+data/*.db
