@@ -145,6 +145,6 @@ La clase `Venta` de [`src/models.py`](./src/models.py) define las columnas y res
 - [x] Lógica para evitar duplicados al repetir la carga.
 - [x] `.gitignore` para la base generada, el entorno y los archivos temporales.
 - [x] Historial local con commits incrementales y descriptivos.
-- [ ] Publicar el repositorio en GitHub como repositorio público.
+- [x] Repositorio publicado públicamente en GitHub.
 
-> La entrega ya tiene historial local. Solo falta vincularla a un repositorio público de GitHub para completar el último requisito.
+> Repositorio público: <https://github.com/denparra/ds.pre-entrega-8>
