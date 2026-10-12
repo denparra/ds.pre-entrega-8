@@ -3,7 +3,6 @@
 > **Curso:** Data Science II  
 > **Módulo:** 8 — Persistencia y automatización de datos  
 > **Consigna:** [`consigna-pre-entrega-md8.md`](./consigna-pre-entrega-md8.md)  
-> **Guía detallada del código:** [`explicacion_linea_por_linea.md`](./explicacion_linea_por_linea.md)
 
 Este proyecto toma órdenes y un catálogo de productos en CSV, valida y transforma los registros, calcula el importe de cada pedido y guarda el resultado en una base local SQLite. La carga se puede repetir: cada ejecución reemplaza la tabla analítica en una transacción, por lo que no acumula filas duplicadas.
 
@@ -29,7 +28,6 @@ pre-entregamd8/
 │   ├── transform.py            # limpieza, validación y cálculo de ventas
 │   └── load.py                 # creación del esquema y carga transaccional
 ├── consigna-pre-entrega-md8.md
-├── explicacion_linea_por_linea.md
 ├── main.py                     # coordina las tres etapas ETL
 ├── README.md
 └── .gitignore
