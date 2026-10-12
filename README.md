@@ -120,6 +120,7 @@ El archivo [`sql/schema.sql`](./sql/schema.sql) define la tabla de destino (**DD
 - [x] DDL en `sql/schema.sql`.
 - [x] Lógica para evitar duplicados al repetir la carga.
 - [x] `.gitignore` para la base generada, el entorno y los archivos temporales.
-- [ ] Crear/publicar el repositorio público en GitHub y registrar commits incrementales descriptivos.
+- [x] Historial local con commits incrementales y descriptivos.
+- [ ] Publicar el repositorio en GitHub como repositorio público.
 
-> El último punto requiere publicar este proyecto en GitHub y completar el historial de commits del repositorio.
+> La entrega ya tiene historial local. Solo falta vincularla a un repositorio público de GitHub para completar el último requisito.
