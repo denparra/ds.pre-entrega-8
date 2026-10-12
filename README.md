@@ -79,7 +79,7 @@ cd "Data Science II/Modulo 8/pre-entregamd8"
 .\.venv\Scripts\python.exe main.py
 ```
 
-El ejemplo usa el entorno `.venv` propio de esta entrega, creado en los pasos de **Instalación**. También puedes ejecutar `python main.py` después de activar ese entorno.
+El ejemplo usa el entorno `.venv` propio de esta entrega, creado en los pasos de **Instalación**. Si no quieres activar el entorno, llama directamente a su ejecutable:
 
 ```powershell
 .\.venv\Scripts\python.exe main.py
