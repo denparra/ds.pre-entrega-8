@@ -45,10 +45,13 @@ pre-entregamd8/
 │   ├── transform.py            # limpieza, validación y cálculo de ventas
 │   ├── models.py               # Base declarativa y modelo ORM Venta
 │   └── load.py                 # Engine, Session y carga transaccional
+├── tests/
+│   └── test_etl.py             # pruebas unitarias y de integración con DB temporal
 ├── consigna-pre-entrega-md8.md
 ├── main.py                     # coordina las tres etapas ETL
 ├── requirements.txt            # SQLAlchemy 2.x
 ├── README.md
+├── INFORME_REVISION_Y_PRUEBAS.md # revisión enfocada y última corrida comprobada
 └── .gitignore
 ```
 
@@ -93,6 +96,24 @@ El ejemplo usa el entorno `.venv` propio de esta entrega, creado en los pasos de
 ```
 
 El script encuentra los CSV y el archivo SQLite a partir de su propia ubicación; por eso funciona desde cualquiera de las dos carpetas.
+
+## Ejecutar las pruebas
+
+Desde la raíz de `pre-entregamd8`, con SQLAlchemy instalado en el entorno:
+
+```powershell
+py -m unittest discover -s tests -v
+```
+
+En macOS o Linux:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+Las pruebas verifican la lectura y validación de los CSV, el cálculo de ventas, la ejecución completa del flujo, la repetición de la carga sin duplicados y la reversión de una carga inválida. **Usan archivos y una base SQLite temporales; no modifican `data/ventas.db`.** No se necesita instalar una biblioteca adicional para las pruebas: `unittest` forma parte de Python.
+
+El archivo [`INFORME_REVISION_Y_PRUEBAS.md`](./INFORME_REVISION_Y_PRUEBAS.md) relaciona la implementación con los criterios de evaluación y registra el resultado de la última ejecución comprobada.
 
 ## Resultado esperado
 
@@ -146,5 +167,7 @@ La clase `Venta` de [`src/models.py`](./src/models.py) define las columnas y res
 - [x] `.gitignore` para la base generada, el entorno y los archivos temporales.
 - [x] Historial local con commits incrementales y descriptivos.
 - [x] Repositorio publicado públicamente en GitHub.
+- [x] Pruebas reproducibles del flujo y de la persistencia en una base temporal.
+- [x] Revisión enfocada y reporte de la corrida de pruebas.
 
 > Repositorio público: <https://github.com/denparra/ds.pre-entrega-8>
